@@ -15,19 +15,22 @@ public class RestarterThread extends Thread {
     private final String apiKey;
     private final String serverID;
 
-    public static void startMe(File configFolder) {
+    private final PlayerGetter playerGetter;
+
+    public static void startMe(File configFolder, PlayerGetter playerGetter) {
         Configuration config = new Configuration(new File(configFolder, "config.txt"));
         stopMe();
-        instance = new RestarterThread(config.getValue("api-url"), config.getValue("api-user"), config.getValue("api-key"), config.getValue("server-id"));
+        instance = new RestarterThread(config.getValue("api-url"), config.getValue("api-user"), config.getValue("api-key"), config.getValue("server-id"), playerGetter);
         instance.start();
     }
 
-    private RestarterThread(String apiURL, String apiUser, String apiKey, String serverID) {
+    private RestarterThread(String apiURL, String apiUser, String apiKey, String serverID, PlayerGetter playerGetter) {
         this.running = true;
         this.apiURL = apiURL;
         this.apiUser = apiUser;
         this.apiKey = apiKey;
         this.serverID = serverID;
+        this.playerGetter = playerGetter;
         setDaemon(true);
     }
 
@@ -43,7 +46,7 @@ public class RestarterThread extends Thread {
             try {
                 Thread.sleep(5000);
             } catch (Exception e) { }
-            if(checkForMe.exists()) {
+            if(checkForMe.exists() && playerGetter.isEmpty()) {
                 final MulticraftAPI api = new MulticraftAPI(apiURL, apiUser, apiKey);
                 api.call("restartServer", Collections.singletonMap("id", serverID));
                 return;
