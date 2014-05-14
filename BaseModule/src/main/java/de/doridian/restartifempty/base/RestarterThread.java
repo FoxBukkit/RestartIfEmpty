@@ -46,7 +46,7 @@ public class RestarterThread extends Thread {
             try {
                 Thread.sleep(5000);
             } catch (Exception e) { }
-            if(checkForMe.exists() && playerGetter.isEmpty()) {
+            if(checkForMe.exists() && playerGetter.isEmpty() && checkForMe.delete()) {
                 final MulticraftAPI api = new MulticraftAPI(apiURL, apiUser, apiKey);
                 api.call("restartServer", Collections.singletonMap("id", serverID));
                 return;
