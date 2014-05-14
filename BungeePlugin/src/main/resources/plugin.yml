@@ -1,0 +1,4 @@
+name: RestartIfEmptyBungee
+main: de.doridian.restartifempty.bungee.PluginMain
+author: Doridian
+version: 1.0.0
