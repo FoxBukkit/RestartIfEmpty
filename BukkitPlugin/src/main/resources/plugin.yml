@@ -1,4 +1,4 @@
-name: RestartIfEmptyBukkit
+name: RestartIfEmpty
 main: de.doridian.restartifempty.bukkit.PluginMain
 author: Doridian
 version: 1.0.0
