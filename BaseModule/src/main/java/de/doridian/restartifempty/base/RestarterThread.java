@@ -9,6 +9,7 @@ public class RestarterThread extends Thread {
     private boolean running;
 
     private static RestarterThread instance = null;
+    private static final File restarterFile = new File(System.getProperty("user.home") + "/deploy/restart_if_empty");;
 
     private final String apiURL;
     private final String apiUser;
@@ -22,6 +23,12 @@ public class RestarterThread extends Thread {
         stopMe();
         instance = new RestarterThread(config.getValue("api-url"), config.getValue("api-user"), config.getValue("api-key"), config.getValue("server-id"), playerGetter);
         instance.start();
+    }
+
+    public static void initiateRestart() {
+        try {
+            restarterFile.createNewFile();
+        } catch (Exception e) { }
     }
 
     private RestarterThread(String apiURL, String apiUser, String apiKey, String serverID, PlayerGetter playerGetter) {
@@ -41,12 +48,11 @@ public class RestarterThread extends Thread {
 
     @Override
     public void run() {
-        File checkForMe = new File(System.getProperty("user.home") + "/deploy/restart_if_empty");
         while(running) {
             try {
                 Thread.sleep(5000);
             } catch (Exception e) { }
-            if(checkForMe.exists() && playerGetter.isEmpty() && checkForMe.delete()) {
+            if(restarterFile.exists() && playerGetter.isEmpty() && restarterFile.delete()) {
                 final MulticraftAPI api = new MulticraftAPI(apiURL, apiUser, apiKey);
                 api.call("restartServer", Collections.singletonMap("id", serverID));
                 return;

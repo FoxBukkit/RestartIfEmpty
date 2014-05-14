@@ -2,3 +2,8 @@ name: RestartIfEmpty
 main: de.doridian.restartifempty.bukkit.PluginMain
 author: Doridian
 version: 1.0.0
+commands:
+    queuerb:
+        description: Queue a restart for the next time the server is empty
+        permission: restartifempty.queue
+        usage: /<command>
