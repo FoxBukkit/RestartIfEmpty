@@ -19,6 +19,9 @@ public class RestarterThread extends Thread {
     private final PlayerGetter playerGetter;
 
     public static void startMe(File configFolder, PlayerGetter playerGetter) {
+        try {
+            restarterFile.delete();
+        } catch (Exception e) { }
         Configuration config = new Configuration(new File(configFolder, "config.txt"));
         stopMe();
         instance = new RestarterThread(config.getValue("api-url"), config.getValue("api-user"), config.getValue("api-key"), config.getValue("server-id"), playerGetter);
