@@ -1,38 +1,63 @@
 package de.doridian.restartifempty.base;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Configuration {
-	private HashMap<String,String> configValues = new HashMap<>();
+    private final File configFile;
+	private final HashMap<String,String> configValues;
 
-	public Configuration(File configFile) {
-		configValues.clear();
-		try {
-			BufferedReader stream = new BufferedReader(new FileReader(configFile));
-			String line; int lpos;
-			while((line = stream.readLine()) != null) {
-				lpos = line.lastIndexOf('=');
-				if(lpos > 0)
-					configValues.put(line.substring(0,lpos), line.substring(lpos+1));
-			}
-			stream.close();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+	public Configuration(File configFolder) {
+        configValues = new HashMap<>();
+        configFolder.mkdirs();
+        configFile = new File(configFolder, "config.txt");
+        load();
+    }
+
+    public void load() {
+        synchronized (configValues) {
+            configValues.clear();
+            try {
+                BufferedReader stream = new BufferedReader(new FileReader(configFile));
+                String line;
+                int lpos;
+                while ((line = stream.readLine()) != null) {
+                    lpos = line.lastIndexOf('=');
+                    if (lpos > 0)
+                        configValues.put(line.substring(0, lpos), line.substring(lpos + 1));
+                }
+                stream.close();
+            } catch (FileNotFoundException e) {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 	}
 
-    public String getValue(String key) {
-        return getValue(key, "");
+    public void save() {
+        synchronized (configValues) {
+            try {
+                PrintWriter stream = new PrintWriter(new FileWriter(configFile));
+                for (Map.Entry<String, String> configEntry : configValues.entrySet()) {
+                    stream.println(configEntry.getKey() + "=" + configEntry.getValue());
+                }
+                stream.close();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
 	public String getValue(String key, String def) {
-		if(configValues.containsKey(key)) {
-			return configValues.get(key);
-		}
+        synchronized (configValues) {
+            if (configValues.containsKey(key)) {
+                return configValues.get(key);
+            }
+            configValues.put(key, def);
+        }
+        save();
 		return def;
 	}
 }

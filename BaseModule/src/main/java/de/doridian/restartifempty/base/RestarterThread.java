@@ -9,7 +9,7 @@ public class RestarterThread extends Thread {
     private boolean running;
 
     private static RestarterThread instance = null;
-    private static final File restarterFile = new File(System.getProperty("user.home") + "/deploy/restart_if_empty");;
+    private static final File restarterFile = new File(new File(new File(System.getProperty("user.home")), "deploy"), "restart_if_empty");
 
     private final String apiURL;
     private final String apiUser;
@@ -24,7 +24,7 @@ public class RestarterThread extends Thread {
         } catch (Exception e) { }
         Configuration config = new Configuration(new File(configFolder, "config.txt"));
         stopMe();
-        instance = new RestarterThread(config.getValue("api-url"), config.getValue("api-user"), config.getValue("api-key"), config.getValue("server-id"), playerGetter);
+        instance = new RestarterThread(config.getValue("api-url", "http://multicraft.example.com/api.php"), config.getValue("api-user", "admin"), config.getValue("api-key", "invalid"), config.getValue("server-id", "1"), playerGetter);
         instance.start();
     }
 
