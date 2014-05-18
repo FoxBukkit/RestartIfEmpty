@@ -43,6 +43,7 @@ public class RestarterThread extends Thread {
         this.serverID = serverID;
         this.playerGetter = playerGetter;
         setDaemon(true);
+        setName("RestartIfEmpty-RestarterThread");
     }
 
     public static void stopMe() {
