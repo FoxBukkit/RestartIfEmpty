@@ -1,5 +1,6 @@
 package de.doridian.restartifempty.base;
 
+import de.doridian.dependencies.config.Configuration;
 import de.doridian.multicraft.api.MulticraftAPI;
 
 import java.io.File;
@@ -22,7 +23,7 @@ public class RestarterThread extends Thread {
         try {
             restarterFile.delete();
         } catch (Exception e) { }
-        Configuration config = new Configuration(new File(configFolder, "config.txt"));
+        Configuration config = new Configuration(configFolder);
         stopMe();
         instance = new RestarterThread(config.getValue("api-url", "http://multicraft.example.com/api.php"), config.getValue("api-user", "admin"), config.getValue("api-key", "invalid"), config.getValue("server-id", "1"), playerGetter);
         instance.start();
