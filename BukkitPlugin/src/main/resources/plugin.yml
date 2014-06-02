@@ -1,5 +1,5 @@
 name: RestartIfEmpty
-main: de.doridian.restartifempty.bukkit.PluginMain
+main: com.foxelbox.restartifempty.bukkit.PluginMain
 author: Doridian
 version: 1.0.0
 commands:

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with RestartIfEmptyBase.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.doridian.restartifempty.base;
+package com.foxelbox.restartifempty.base;
 
 public interface PlayerGetter {
     public boolean isEmpty();

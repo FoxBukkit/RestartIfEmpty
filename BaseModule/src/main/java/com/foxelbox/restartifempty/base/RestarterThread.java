@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with RestartIfEmptyBase.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.doridian.restartifempty.base;
+package com.foxelbox.restartifempty.base;
 
-import de.doridian.dependencies.config.Configuration;
-import de.doridian.multicraft.api.MulticraftAPI;
+import com.foxelbox.dependencies.config.Configuration;
+import com.foxelbox.multicraft.api.MulticraftAPI;
 
 import java.io.File;
 import java.util.Collections;

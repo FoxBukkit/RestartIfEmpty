@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with RestartIfEmptyBungee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.doridian.restartifempty.bungee;
+package com.foxelbox.restartifempty.bungee;
 
-import de.doridian.restartifempty.base.PlayerGetter;
-import de.doridian.restartifempty.base.RestarterThread;
+import com.foxelbox.restartifempty.base.PlayerGetter;
+import com.foxelbox.restartifempty.base.RestarterThread;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;

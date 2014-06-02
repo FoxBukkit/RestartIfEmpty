@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with RestartIfEmptyBukkit.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.doridian.restartifempty.bukkit;
+package com.foxelbox.restartifempty.bukkit;
 
-import de.doridian.restartifempty.base.PlayerGetter;
-import de.doridian.restartifempty.base.RestarterThread;
+import com.foxelbox.restartifempty.base.PlayerGetter;
+import com.foxelbox.restartifempty.base.RestarterThread;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

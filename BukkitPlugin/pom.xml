@@ -21,7 +21,7 @@
 	
 	<parent>
 		<artifactId>RestartIfEmptyParent</artifactId>
-		<groupId>de.doridian</groupId>
+		<groupId>com.foxelbox</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	
@@ -70,7 +70,7 @@
             <scope>provided</scope>
 		</dependency>
         <dependency>
-            <groupId>de.doridian</groupId>
+            <groupId>com.foxelbox</groupId>
             <artifactId>RestartIfEmptyBase</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
