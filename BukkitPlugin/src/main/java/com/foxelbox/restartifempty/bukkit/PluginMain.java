@@ -16,8 +16,9 @@
  */
 package com.foxelbox.restartifempty.bukkit;
 
+import com.foxelbox.dependencies.threading.SimpleThreadCreator;
 import com.foxelbox.restartifempty.base.PlayerGetter;
-import com.foxelbox.restartifempty.base.RestarterThread;
+import com.foxelbox.restartifempty.base.RestarterRunnable;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,17 +27,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PluginMain extends JavaPlugin {
     @Override
     public void onEnable() {
-        RestarterThread.startMe(getDataFolder(), new PlayerGetter() {
-            @Override
-            public boolean isEmpty() {
-                return getServer().getOnlinePlayers().length == 0;
-            }
-        });
+        RestarterRunnable.startMe(new SimpleThreadCreator(), getDataFolder(), new PlayerGetter() {
+			@Override
+			public boolean isEmpty() {
+				return getServer().getOnlinePlayers().length == 0;
+			}
+		});
 
         getServer().getPluginCommand("queuerb").setExecutor(new CommandExecutor() {
             @Override
             public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-                RestarterThread.initiateRestart();
+                RestarterRunnable.initiateRestart();
                 commandSender.sendMessage("[RIE] Queued restart for next time the Bukkit server is empty!");
                 return true;
             }
@@ -46,6 +47,6 @@ public class PluginMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        RestarterThread.stopMe();
+        RestarterRunnable.stopMe();
     }
 }

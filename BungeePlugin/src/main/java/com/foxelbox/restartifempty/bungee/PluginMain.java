@@ -16,26 +16,34 @@
  */
 package com.foxelbox.restartifempty.bungee;
 
+import com.foxelbox.dependencies.threading.IThreadCreator;
 import com.foxelbox.restartifempty.base.PlayerGetter;
-import com.foxelbox.restartifempty.base.RestarterThread;
+import com.foxelbox.restartifempty.base.RestarterRunnable;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.scheduler.GroupedThreadFactory;
 
 public class PluginMain extends Plugin {
     @Override
     public void onEnable() {
-        RestarterThread.startMe(getDataFolder(), new PlayerGetter() {
-            @Override
-            public boolean isEmpty() {
-                return getProxy().getOnlineCount() == 0;
-            }
-        });
+        RestarterRunnable.startMe(new IThreadCreator() {
+			private final GroupedThreadFactory groupedThreadFactory = new GroupedThreadFactory(PluginMain.this);
+			@Override
+			public Thread createThread(Runnable runnable) {
+				return groupedThreadFactory.newThread(runnable);
+			}
+		}, getDataFolder(), new PlayerGetter() {
+			@Override
+			public boolean isEmpty() {
+				return getProxy().getOnlineCount() == 0;
+			}
+		});
         getProxy().getPluginManager().registerCommand(this, new Command("gqueuerb", "restartifempty.queue") {
             @Override
             public void execute(CommandSender commandSender, String[] strings) {
-                RestarterThread.initiateRestart();
+                RestarterRunnable.initiateRestart();
                 commandSender.sendMessage(new TextComponent("[RIE] Queued restart for next time the Bungee server is empty!"));
             }
         });
@@ -43,6 +51,6 @@ public class PluginMain extends Plugin {
 
     @Override
     public void onDisable() {
-        RestarterThread.stopMe();
+        RestarterRunnable.stopMe();
     }
 }

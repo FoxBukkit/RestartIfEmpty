@@ -17,15 +17,18 @@
 package com.foxelbox.restartifempty.base;
 
 import com.foxelbox.dependencies.config.Configuration;
+import com.foxelbox.dependencies.threading.IThreadCreator;
 import com.foxelbox.multicraft.api.MulticraftAPI;
 
 import java.io.File;
 import java.util.Collections;
 
-public class RestarterThread extends Thread {
+public class RestarterRunnable implements Runnable {
     private boolean running;
 
-    private static RestarterThread instance = null;
+    private static RestarterRunnable instance = null;
+    private static Thread thread = null;
+
     private static final File restarterFile = new File(new File(new File(System.getProperty("user.home")), "deploy"), "restart_if_empty");
 
     private final String apiURL;
@@ -35,14 +38,16 @@ public class RestarterThread extends Thread {
 
     private final PlayerGetter playerGetter;
 
-    public static void startMe(File configFolder, PlayerGetter playerGetter) {
+    public static void startMe(IThreadCreator threadCreator, File configFolder, PlayerGetter playerGetter) {
         try {
             restarterFile.delete();
         } catch (Exception e) { }
         Configuration config = new Configuration(configFolder);
         stopMe();
-        instance = new RestarterThread(config.getValue("api-url", "http://multicraft.example.com/api.php"), config.getValue("api-user", "admin"), config.getValue("api-key", "invalid"), config.getValue("server-id", "1"), playerGetter);
-        instance.start();
+		thread = threadCreator.createThread(new RestarterRunnable(config.getValue("api-url", "http://multicraft.example.com/api.php"), config.getValue("api-user", "admin"), config.getValue("api-key", "invalid"), config.getValue("server-id", "1"), playerGetter));
+		thread.setDaemon(true);
+		thread.setName("RestartIfEmpty-RestarterThread");
+		thread.start();
     }
 
     public static void initiateRestart() {
@@ -51,15 +56,14 @@ public class RestarterThread extends Thread {
         } catch (Exception e) { }
     }
 
-    private RestarterThread(String apiURL, String apiUser, String apiKey, String serverID, PlayerGetter playerGetter) {
+    private RestarterRunnable(String apiURL, String apiUser, String apiKey, String serverID, PlayerGetter playerGetter) {
         this.running = true;
         this.apiURL = apiURL;
         this.apiUser = apiUser;
         this.apiKey = apiKey;
         this.serverID = serverID;
         this.playerGetter = playerGetter;
-        setDaemon(true);
-        setName("RestartIfEmpty-RestarterThread");
+		instance = this;
     }
 
     public static void stopMe() {
