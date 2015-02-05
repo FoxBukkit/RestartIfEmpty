@@ -29,7 +29,7 @@ public class PluginMain extends Plugin {
     @Override
     public void onEnable() {
         RestarterRunnable.startMe(new IThreadCreator() {
-			private final GroupedThreadFactory groupedThreadFactory = new GroupedThreadFactory(PluginMain.this);
+			private final GroupedThreadFactory groupedThreadFactory = new GroupedThreadFactory(PluginMain.this, "RestartIfEmpty-Restarter");
 			@Override
 			public Thread createThread(Runnable runnable) {
 				return groupedThreadFactory.newThread(runnable);
