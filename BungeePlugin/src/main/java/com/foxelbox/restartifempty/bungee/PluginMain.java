@@ -19,6 +19,7 @@ package com.foxelbox.restartifempty.bungee;
 import com.foxelbox.dependencies.threading.IThreadCreator;
 import com.foxelbox.restartifempty.base.PlayerGetter;
 import com.foxelbox.restartifempty.base.RestarterRunnable;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
@@ -43,6 +44,7 @@ public class PluginMain extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new Command("gqueuerb", "restartifempty.queue") {
             @Override
             public void execute(CommandSender commandSender, String[] strings) {
+                BungeeCord.getInstance().stopListeners();
                 RestarterRunnable.initiateRestart();
                 commandSender.sendMessage(new TextComponent("[RIE] Queued restart for next time the Bungee server is empty!"));
             }
