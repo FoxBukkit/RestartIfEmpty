@@ -29,7 +29,7 @@ public class RestarterRunnable implements Runnable {
     private static RestarterRunnable instance = null;
     private static Thread thread = null;
 
-    private static final File restarterFile = new File(new File(new File(System.getProperty("user.home")), "deploy"), "restart_if_empty");
+    private static final File restarterFile = new File(new File("deploy"), "restart_if_empty");
 
     private final String apiURL;
     private final String apiUser;

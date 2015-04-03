@@ -49,7 +49,7 @@ public class PluginMain extends Plugin {
                 RestarterRunnable.initiateRestart(new Runnable() {
                     @Override
                     public void run() {
-                        System.exit(0);
+                        BungeeCord.getInstance().stop();
                     }
                 });
                 commandSender.sendMessage(new TextComponent("[RIE] Queued stop for next time the Bungee server is empty!"));
