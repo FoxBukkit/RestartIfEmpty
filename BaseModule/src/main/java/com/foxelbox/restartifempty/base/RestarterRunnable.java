@@ -38,6 +38,8 @@ public class RestarterRunnable implements Runnable {
 
     private final PlayerGetter playerGetter;
 
+    private static Runnable runOnRestart = null;
+
     public static void startMe(IThreadCreator threadCreator, File configFolder, PlayerGetter playerGetter) {
         try {
             restarterFile.delete();
@@ -48,6 +50,11 @@ public class RestarterRunnable implements Runnable {
 		thread.setDaemon(true);
 		thread.setName("RestartIfEmpty-RestarterThread");
 		thread.start();
+    }
+
+    public static void initiateRestart(Runnable _runOnRestart) {
+        runOnRestart = _runOnRestart;
+        initiateRestart();
     }
 
     public static void initiateRestart() {
@@ -67,8 +74,9 @@ public class RestarterRunnable implements Runnable {
     }
 
     public static void stopMe() {
-        if(instance != null)
+        if(instance != null) {
             instance.running = false;
+        }
     }
 
     @Override
@@ -78,9 +86,14 @@ public class RestarterRunnable implements Runnable {
                 Thread.sleep(5000);
             } catch (Exception e) { }
             if(restarterFile.exists() && playerGetter.isEmpty() && restarterFile.delete()) {
-                final MulticraftAPI api = new MulticraftAPI(apiURL, apiUser, apiKey);
-                api.call("restartServer", Collections.singletonMap("id", serverID));
-                return;
+                if(runOnRestart == null) {
+                    final MulticraftAPI api = new MulticraftAPI(apiURL, apiUser, apiKey);
+                    api.call("restartServer", Collections.singletonMap("id", serverID));
+                    return;
+                } else {
+                    runOnRestart.run();
+                    runOnRestart = null;
+                }
             }
         }
     }

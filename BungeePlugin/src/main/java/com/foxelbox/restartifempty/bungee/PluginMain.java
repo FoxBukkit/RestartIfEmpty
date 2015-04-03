@@ -41,6 +41,21 @@ public class PluginMain extends Plugin {
 				return getProxy().getOnlineCount() == 0;
 			}
 		});
+
+        getProxy().getPluginManager().registerCommand(this, new Command("gqueuestop", "restartifempty.noone.stop") {
+            @Override
+            public void execute(CommandSender commandSender, String[] strings) {
+                BungeeCord.getInstance().stopListeners();
+                RestarterRunnable.initiateRestart(new Runnable() {
+                    @Override
+                    public void run() {
+                        BungeeCord.getInstance().stop();
+                    }
+                });
+                commandSender.sendMessage(new TextComponent("[RIE] Queued stop for next time the Bungee server is empty!"));
+            }
+        });
+
         getProxy().getPluginManager().registerCommand(this, new Command("gqueuerb", "restartifempty.queue") {
             @Override
             public void execute(CommandSender commandSender, String[] strings) {
