@@ -59,7 +59,7 @@ public class PluginMain extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new Command("gqueuerb", "restartifempty.queue") {
             @Override
             public void execute(CommandSender commandSender, String[] strings) {
-                BungeeCord.getInstance().stopListeners();
+                //BungeeCord.getInstance().stopListeners();
                 RestarterRunnable.initiateRestart();
                 commandSender.sendMessage(new TextComponent("[RIE] Queued restart for next time the Bungee server is empty!"));
             }
