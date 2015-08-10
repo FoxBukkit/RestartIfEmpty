@@ -30,7 +30,7 @@ public class PluginMain extends JavaPlugin {
         RestarterRunnable.startMe(new SimpleThreadCreator(), getDataFolder(), new PlayerGetter() {
 			@Override
 			public boolean isEmpty() {
-				return getServer().getOnlinePlayers().length == 0;
+				return getServer().getOnlinePlayers().isEmpty();
 			}
 		});
 
