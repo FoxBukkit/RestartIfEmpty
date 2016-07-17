@@ -66,6 +66,10 @@
 	</modules>
 
     <repositories>
+	<repository>
+		<id>foxelbox-repo</id>
+		<url>https://maven.doridian.net/repository/maven-snapshots</url>
+	</repository>
         <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
