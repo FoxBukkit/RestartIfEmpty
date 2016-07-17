@@ -64,9 +64,10 @@
 
 	<dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot-api</artifactId>
+		<version>1.10.2-R0.1-SNAPSHOT</version>
+		<type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
